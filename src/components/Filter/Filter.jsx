@@ -1,14 +1,14 @@
-import React from 'react';
-import css from './Filter.module.css';
-import { selectFilterValue } from 'redux/selectors';
 import { useDispatch, useSelector } from 'react-redux';
-import { setFilterValue } from 'redux/filterSlice';
+import { selectFilter } from 'redux/selectors';
+import { setFilter } from 'redux/filterSlice';
+import css from './Filter.module.css';
 
-export default function Filter() {
-  const value = useSelector(selectFilterValue);
+function Filter() {
   const dispatch = useDispatch();
-  const handleChange = e => {
-    dispatch(setFilterValue(e.target.value));
+  const filter = useSelector(selectFilter);
+
+  const handleFilterChange = event => {
+    dispatch(setFilter(event.target.value.trim()));
   };
 
   return (
@@ -17,9 +17,11 @@ export default function Filter() {
       <input
         className={css.filterInput}
         type="text"
-        value={value}
-        onChange={handleChange}
+        value={filter}
+        onChange={handleFilterChange}
       />
     </label>
   );
 }
+
+export default Filter;

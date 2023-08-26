@@ -1,16 +1,35 @@
 import React, { useState } from 'react';
-import { nanoid } from 'nanoid';
-import css from './Form.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from 'redux/contactsSlice';
+import { addContact } from 'redux/operations';
 import { selectContacts } from 'redux/selectors';
+import css from './Form.module.css';
 
-export default function Form() {
+const Form = () => {
+  const dispatch = useDispatch();
+  const contacts = useSelector(selectContacts);
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
-  const dispatch = useDispatch();
-  const contacts = useSelector(selectContacts);
+  const handleSubmit = event => {
+    event.preventDefault();
+
+    const contact = {
+      name: name,
+      number: number,
+    };
+
+    if (
+      contacts.some(
+        contact => contact.name === name || contact.number === number
+      )
+    ) {
+      alert('This contact already exists!');
+    } else dispatch(addContact(contact));
+    console.log(contact);
+
+    setName('');
+    setNumber('');
+  };
 
   const handleChange = event => {
     const { name, value } = event.target;
@@ -20,29 +39,6 @@ export default function Form() {
       setNumber(value);
     }
   };
-
-  const handleSubmit = event => {
-    event.preventDefault();
-
-    if (
-      contacts.some(
-        contact => contact.name === name || contact.number === number
-      )
-    ) {
-      alert('This contact already exists!');
-    } else {
-      const newContact = {
-        id: nanoid(),
-        name: name.trim(),
-        number: number.trim(),
-      };
-      dispatch(addContact(newContact));
-      // addContact(newContact);
-      setName('');
-      setNumber('');
-    }
-  };
-
   return (
     <form className={css.form} onSubmit={handleSubmit}>
       <label className={css.formLabel} htmlFor="name">
@@ -57,6 +53,7 @@ export default function Form() {
           required
         />
       </label>
+
       <label className={css.formLabel} htmlFor="number">
         Number
         <input
@@ -69,9 +66,12 @@ export default function Form() {
           required
         />
       </label>
+
       <button type="submit" className={css.formButton}>
         Add contact
       </button>
     </form>
   );
-}
+};
+
+export default Form;
