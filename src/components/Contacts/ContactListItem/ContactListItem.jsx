@@ -8,7 +8,7 @@ const ContactListItem = ({ contact }) => {
     <li className={css.contactItem}>
       <div className={css.contactWrapper}>
         <span className={css.contactName}>
-          {contact.name} : {contact.number}
+          {contact.name} : {contact.phone}
         </span>
         <button
           type="button"

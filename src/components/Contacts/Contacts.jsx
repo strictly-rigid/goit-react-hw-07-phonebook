@@ -25,10 +25,10 @@ function Contacts() {
       {isLoading ? (
         <p>...Loading</p>
       ) : filteredContacts.length === 0 && !error ? (
-        <p>No contacts on your phonebook</p>
+        <p>The phonebook is empty.</p>
       ) : (
-        filteredContacts.map(({ id, name, number }) => (
-          <ContactListItem key={id} contact={{ id, name, number }} />
+        filteredContacts.map(({ id, name, phone }) => (
+          <ContactListItem key={id} contact={{ id, name, phone }} />
         ))
       )}
     </div>
